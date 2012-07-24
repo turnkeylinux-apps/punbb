@@ -56,6 +56,9 @@ sed -i "s|base_url.*|base_url = 'http://$DOMAIN';|" $CONF
 chown www-data:www-data $CONF
 chmod 640 $CONF
 
+# set title
+$MYSQL_BATCH --execute "UPDATE $DB_NAME.config SET conf_value=\"TurnKey PunBB\" WHERE conf_name=\"o_board_title\";"
+
 # stop services
 /etc/init.d/mysql stop
 /etc/init.d/apache2 stop
