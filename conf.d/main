@@ -12,3 +12,11 @@ DOMAIN=www.example.com
 SRC=/usr/local/src
 WEBROOT=/var/www/punbb
 
+# unpack and set permissions
+unzip $SRC/punbb-*.zip -d $(dirname $WEBROOT)
+mv $(dirname $WEBROOT)/punbb-* $WEBROOT
+rm $SRC/punbb-*.zip
+chown -R root:root $WEBROOT
+chown -R www-data:www-data $WEBROOT/cache
+chown -R www-data:www-data $WEBROOT/img/avatars
+
