@@ -20,3 +20,8 @@ chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/cache
 chown -R www-data:www-data $WEBROOT/img/avatars
 
+# configure apache
+a2dissite default
+a2ensite punbb
+a2enmod rewrite
+
