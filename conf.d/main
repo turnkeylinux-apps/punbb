@@ -13,9 +13,10 @@ SRC=/usr/local/src
 WEBROOT=/var/www/punbb
 
 # unpack and set permissions
-unzip $SRC/punbb-*.zip -d $(dirname $WEBROOT)
+tar -zxf $SRC/punbb-*.tar.gz -C $(dirname $WEBROOT)
 mv $(dirname $WEBROOT)/punbb-* $WEBROOT
-rm $SRC/punbb-*.zip
+rm $SRC/punbb-*.tar.gz
+
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/cache
 chown -R www-data:www-data $WEBROOT/img/avatars
