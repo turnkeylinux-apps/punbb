@@ -12,6 +12,7 @@ Option:
 import sys
 import getopt
 import inithooks_cache
+
 import hashlib
 import random
 import string
@@ -77,6 +78,8 @@ def main():
 
     if domain == "DEFAULT":
         domain = DEFAULT_DOMAIN
+
+    inithooks_cache.write('APP_DOMAIN', domain)
 
     def sha1(s):
         return hashlib.sha1(s).hexdigest()
