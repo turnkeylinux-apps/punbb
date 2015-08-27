@@ -11,6 +11,8 @@ Option:
 
 import sys
 import getopt
+import inithooks_cache
+
 import hashlib
 import random
 import string
@@ -63,6 +65,8 @@ def main():
             "Enter email address for the PunBB 'admin' account.",
             "admin@example.com")
 
+    inithooks_cache.write('APP_EMAIL', email)
+
     if not domain:
         if 'd' not in locals():
             d = Dialog('TurnKey Linux - First boot configuration')
@@ -74,6 +78,8 @@ def main():
 
     if domain == "DEFAULT":
         domain = DEFAULT_DOMAIN
+
+    inithooks_cache.write('APP_DOMAIN', domain)
 
     def sha1(s):
         return hashlib.sha1(s).hexdigest()
