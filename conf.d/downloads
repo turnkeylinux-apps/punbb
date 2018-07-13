@@ -5,7 +5,16 @@ dl() {
     cd $2; curl -L -f -O $PROXY $1; cd -
 }
 
+SRC=/usr/local/src
 VERSION="1.4.4"
+PATCHES=$SRC/patches
 
-dl http://punbb.informer.com/download/punbb-${VERSION}.tar.gz /usr/local/src
+dl http://punbb.informer.com/download/punbb-${VERSION}.tar.gz $SRC
 
+# download patches for php7 - as per https://punbb.info/t-1010.html (Russian)
+
+mkdir -p $PATCHES
+dl https://punbb.info/repository/1_4/patches/style/Oxygen/Oxygen.zip $PATCHES
+dl https://punbb.info/repository/1_4/patches/include/parser.zip $PATCHES
+dl https://punbb.info/repository/1_4/patches/include/email.zip $PATCHES
+dl https://punbb.info/repository/1_4/patches/admin/index.zip $PATCHES
