@@ -1,6 +1,7 @@
 turnkey-punbb-15.0 (1) turnkey; urgency=low
 
-  * Domain no longer set by inithook (not required) - closes #958.
+  * Patched to be compatible with PHP7 (via 3rd party community patches - see
+    https://punbb.info/t-1010.html (Russian).
 
   * Install Adminer directly from stretch/main repo
 

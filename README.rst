@@ -13,6 +13,10 @@ and on top of that:
 - PunBB configurations:
    
    - Installed from upstream source code to /var/www/punbb
+   - Patched to be compatible with PHP7 (via 3rd party community patches)
+
+     **Security note**: Updates to PunBB may require supervision so they
+     **ARE NOT** configured to install automatically.
 
 - SSL support out of the box.
 - `Adminer`_ administration frontend for MySQL (listening on port
@@ -20,6 +24,7 @@ and on top of that:
 - Postfix MTA (bound to localhost) to allow sending of email (e.g.,
   password recovery).
 - Webmin modules for configuring Apache2, PHP, MySQL and Postfix.
+
 
 Credentials *(passwords set at first boot)*
 -------------------------------------------
