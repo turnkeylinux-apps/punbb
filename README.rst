@@ -13,7 +13,9 @@ and on top of that:
 - PunBB configurations:
    
    - Installed from upstream source code to /var/www/punbb
-   - Patched to be compatible with PHP7 (via 3rd party community patches)
+   - Patched to be compatible with PHP7 (via 3rd party community patches).
+   - PunBB access via IP address is redirected to domain (set at firstboot)
+     and access via http redirected to https (security & convenience).
 
      **Security note**: Updates to PunBB may require supervision so they
      **ARE NOT** configured to install automatically.

@@ -95,9 +95,12 @@ def main():
     m.execute('UPDATE punbb.config SET conf_value=\"%s\" WHERE conf_name=\"o_webmaster_email\";' % email)
 
     conf = "/var/www/punbb/config.php"
-    system("sed -i \"s|base_url.*|base_url = 'http://%s';|\" %s" % (domain, conf))
+    system("sed -i \"s|base_url.*|base_url = 'https://%s';|\" %s" % (domain, conf))
 
+    apache_conf = "/etc/apache2/sites-available/punbb.conf"
+    system("sed -i \"s|https://.*|https://%s/\$1 [R,L]|\" %s" % (domain, apache_conf))
+
+    system("service apache2 restart")
 
 if __name__ == "__main__":
     main()
-
