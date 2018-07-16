@@ -4,6 +4,8 @@
 Option:
     --pass=     unless provided, will ask interactively
     --email=    unless provided, will ask interactively
+    --domain=   unless provided, will ask interactively
+                DEFAULT=www.example.com
 
 """
 
@@ -26,14 +28,17 @@ def usage(s=None):
     print >> sys.stderr, __doc__
     sys.exit(1)
 
+DEFAULT_DOMAIN="www.example.com"
+
 def main():
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:], "h",
-                                       ['help', 'pass=', 'email='])
+                                       ['help', 'pass=', 'email=', 'domain='])
     except getopt.GetoptError, e:
         usage(e)
 
     email = ""
+    domain = ""
     password = ""
     for opt, val in opts:
         if opt in ('-h', '--help'):
@@ -42,6 +47,8 @@ def main():
             password = val
         elif opt == '--email':
             email = val
+        elif opt == '--domain':
+            domain = val
 
     if not password:
         d = Dialog('TurnKey Linux - First boot configuration')
@@ -60,6 +67,20 @@ def main():
 
     inithooks_cache.write('APP_EMAIL', email)
 
+    if not domain:
+        if 'd' not in locals():
+            d = Dialog('TurnKey Linux - First boot configuration')
+
+        domain = d.get_input(
+            "PunBB Domain",
+            "Enter the domain to serve PunBB.",
+            DEFAULT_DOMAIN)
+
+    if domain == "DEFAULT":
+        domain = DEFAULT_DOMAIN
+
+    inithooks_cache.write('APP_DOMAIN', domain)
+
     def sha1(s):
         return hashlib.sha1(s).hexdigest()
     
@@ -73,7 +94,13 @@ def main():
     m.execute('UPDATE punbb.config SET conf_value=\"%s\" WHERE conf_name=\"o_admin_email\";' % email)
     m.execute('UPDATE punbb.config SET conf_value=\"%s\" WHERE conf_name=\"o_webmaster_email\";' % email)
 
+    conf = "/var/www/punbb/config.php"
+    system("sed -i \"s|base_url.*|base_url = 'https://%s';|\" %s" % (domain, conf))
+
+    apache_conf = "/etc/apache2/sites-available/punbb.conf"
+    system("sed -i \"s|https://.*|https://%s/\$1 [R,L]|\" %s" % (domain, apache_conf))
+
+    system("service apache2 restart")
 
 if __name__ == "__main__":
     main()
-

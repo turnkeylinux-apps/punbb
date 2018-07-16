@@ -10,12 +10,20 @@ ADMIN_MAIL=admin@example.com
 DOMAIN=www.example.com
 
 SRC=/usr/local/src
+PATCHES=$SRC/patches
 WEBROOT=/var/www/punbb
 
 # unpack and set permissions
 tar -zxf $SRC/punbb-*.tar.gz -C $(dirname $WEBROOT)
 mv $(dirname $WEBROOT)/punbb-* $WEBROOT
 rm $SRC/punbb-*.tar.gz
+
+# apply patches for php7 - as per https://punbb.info/t-1010.html (Russian)
+unzip -n $PATCHES/Oxygen.zip -d $WEBROOT/style/Oxygen
+unzip -n $PATCHES/parser.zip -d $WEBROOT/include
+unzip -n $PATCHES/email.zip -d $WEBROOT/include
+unzip -n $PATCHES/index.zip -d $WEBROOT/admin
+rm -r $PATCHES
 
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/cache
@@ -52,8 +60,7 @@ mv $SRC/config.php.tmpl $CONF
 sed -i "s|db_name.*|db_name = '$DB_NAME';|" $CONF
 sed -i "s|db_username.*|db_username = '$DB_USER';|" $CONF
 sed -i "s|db_password.*|db_password = '$DB_PASS';|" $CONF
-sed -i "s|\$base_url.*|//\$base_url = 'http://$DOMAIN';|" $CONF
-
+sed -i "s|base_url.*|base_url = 'http://$DOMAIN';|" $CONF
 
 chown www-data:www-data $CONF
 chmod 640 $CONF
@@ -64,4 +71,3 @@ $MYSQL_BATCH --execute "UPDATE $DB_NAME.config SET conf_value=\"TurnKey PunBB\" 
 # stop services
 service mysql stop
 service apache2 stop
-
