@@ -47,8 +47,8 @@ $MYSQL_BATCH --execute "grant all privileges on $DB_NAME.* to $DB_USER@localhost
 
 # curl based install
 EMAIL=$(echo $ADMIN_MAIL | sed s/@/%40/)
-URL="http://127.0.0.1/admin/install.php"
-CURL="curl -c /tmp/cookie -b /tmp/cookie"
+URL="https://localhost/admin/install.php"
+CURL="curl --insecure -c /tmp/cookie -b /tmp/cookie"
 
 $CURL $URL --data "form_sent=1&req_db_type=mysqli&req_db_host=localhost&req_db_name=$DB_NAME&db_username=$DB_USER&db_password=$DB_PASS&db_prefix=&req_email=$EMAIL&req_username=$ADMIN_NAME&req_password1=$ADMIN_PASS&req_base_url=http%3A%2F%2F127.0.0.1&req_language=English&start=Start+install"
 
