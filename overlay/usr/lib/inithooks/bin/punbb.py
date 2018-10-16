@@ -98,7 +98,7 @@ def main():
     system("sed -i \"s|base_url.*|base_url = 'https://%s';|\" %s" % (domain, conf))
 
     apache_conf = "/etc/apache2/sites-available/punbb.conf"
-    system("sed -i \"s|https://.*|https://%s/\$1 [R,L]|\" %s" % (domain, apache_conf))
+    system("sed -i \"\|RewriteRule|s|https://.*|https://%s/\$1 [R,L]|\" %s" % (domain, apache_conf))
 
     system("service apache2 restart")
 
